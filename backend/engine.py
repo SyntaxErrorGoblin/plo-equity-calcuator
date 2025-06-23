@@ -1,46 +1,29 @@
 import pokerkit as pk
+from concurrent.futures import ProcessPoolExecutor
 
-SIMULATION_COUNT = 2000
+# A constant for the number of simulations to run for accuracy
+SIMULATION_COUNT = 1000
 
-def calculate_plo5_equity(hand1_str: str, hand2_str: str) -> float:
+def get_equity_vs_random(hero_hand_str: str, executor: ProcessPoolExecutor | None = None) -> float:
     """
-    Calculates the equity for a 2-player, 5-card PLO hand using the
-    built-in pokerkit.calculate_equities function.
+    Calculates a hero hand's equity against a single random opponent
+    in PLO5 using the built-in pokerkit.analysis.calculate_hand_strength function.
+    This function can accept an executor for parallel processing.
     """
-    hole_cards = (
-        pk.parse_range(hand1_str),
-        pk.parse_range(hand2_str),
+    hero_range = pk.parse_range(hero_hand_str)
+
+    # The documentation example for Texas Hold'em uses (pk.StandardHighHand,)
+    # for the hand type, which is correct for any standard high-hand game like PLO.
+    hand_strength = pk.analysis.calculate_hand_strength(
+        player_count=2,
+        hole_range=hero_range,
+        board_cards=(),
+        hole_dealing_count=5,
+        board_dealing_count=5,
+        deck=pk.Deck.STANDARD,
+        hand_types=(pk.StandardHighHand,),
+        sample_count=SIMULATION_COUNT,
+        executor=executor,  # We pass the executor to the function
     )
 
-    # We use positional arguments for the required parameters,
-    # and keywords for the optional ones.
-    equities = pk.calculate_equities(
-        hole_cards,
-        (),                            # Empty board for preflop calculation
-        5,                             # hole_dealing_count for PLO5
-        5,                             # board_dealing_count for a full runout
-        pk.Deck.STANDARD,
-        (pk.OmahaHoldemHand,),       
-        sample_count=SIMULATION_COUNT
-    )
-
-    hero_equity = equities[0]
-
-    return hero_equity * 100
-
-if __name__ == "__main__":
-    hero_hand = "AsKsAdKdQc"      # A very strong hand
-    villain_hand = "7h6h5s4s3d"  # A weak, uncoordinated hand
-
-    print(f"Calculating equity for {hero_hand} vs {villain_hand}...")
-
-    try:
-        equity = calculate_plo5_equity(hero_hand, villain_hand)
-        
-        print(f"\nSimulation complete ({SIMULATION_COUNT} hands).")
-        print(f"Hero's Equity: {equity:.2f}%")
-
-    except Exception as e:
-        print(f"\n--- ❌ An error occurred ---")
-        print(f"Error type: {type(e).__name__}")
-        print(f"Error message: {e}")
+    return hand_strength * 100  # Convert to percentage

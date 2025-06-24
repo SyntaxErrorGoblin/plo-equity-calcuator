@@ -1,5 +1,4 @@
 import pokerkit as pk
-import time
 import json
 import os
 from concurrent.futures import ProcessPoolExecutor
@@ -18,11 +17,7 @@ def generate_unique_random_hand(processed_hands: set) -> str:
         shuffled_cards = pk.shuffled(deck)
         random_hand = shuffled_cards[:5]
         
-        # --- CORRECTED LINE ---
-        # Instead of str(c), we use repr(c) which gives the short form like 'As', 'Td', etc.
         hand_str = "".join(map(repr, random_hand))
-        # --- END CORRECTION ---
-
         if hand_str not in processed_hands:
             return hand_str
 
@@ -53,15 +48,11 @@ def run_precomputation(executor):
     for i in range(HANDS_TO_COMPUTE_IN_THIS_RUN):
         hand_str = generate_unique_random_hand(processed_hands)
 
-        print(f"[{i+1}/{HANDS_TO_COMPUTE_IN_THIS_RUN}] Calculating equity for new hand: {hand_str}...")
-        
         equity = get_equity_vs_random(hand_str, executor)
         
         processed_hands.add(hand_str)
         results[hand_str] = equity
         
-        print(f"-> Result: {equity:.2f}%")
-
         if (i + 1) % 5 == 0 and i > 0:
             print(f"--- Saving progress to {RESULTS_FILE} ---")
             save_results(results)

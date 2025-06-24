@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
 
-from .engine import get_equity_vs_random
+from engine import get_equity_vs_random
 
 
 

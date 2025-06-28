@@ -6,7 +6,7 @@ from engine import get_equity_vs_random
 
 # --- Configuration ---
 RESULTS_FILE = 'ranked_hands.json'
-HANDS_TO_COMPUTE_IN_THIS_RUN = 50
+HANDS_TO_COMPUTE_IN_THIS_RUN = 10000
 
 def generate_unique_random_hand(processed_hands: set) -> str:
     """
@@ -54,7 +54,7 @@ def run_precomputation(executor):
         results[hand_str] = equity
         
         if (i + 1) % 5 == 0 and i > 0:
-            print(f"--- Saving progress to {RESULTS_FILE} ---")
+            print(f"--- Saving progress to {RESULTS_FILE}, so far {i + 1} hands saved---")
             save_results(results)
 
     print(f"--- Final save for this run. ---")

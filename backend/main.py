@@ -1,35 +1,48 @@
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware # <-- Import CORS
 
-from engine import get_equity_vs_random
+from engine import calculate_hand_vs_range_equity
 
-
-
-# Create the FastAPI application object
 app = FastAPI()
 
-# Define the structure of the incoming request data
-class HandRequest(BaseModel):
-    hero_hand: str
+origins = [
+    "http://localhost",
+    "http://localhost:5173", # The default port for Vite/React dev server
+    # Will add your deployed Vercel URL here later
+]
 
-# Define your API endpoint
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"], # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"], # Allow all headers
+)
+
+# Define the request model to accept both hero hand and villain range
+class EquityRequest(BaseModel):
+    hero_hand: str
+    villain_range_percent: int
+
 @app.post("/api/calculate-equity")
-async def calculate_equity_endpoint(request: HandRequest):
+async def calculate_equity_endpoint(request: EquityRequest):
     """
-    API endpoint to calculate the equity of a hero's hand against a random hand.
+    API endpoint to calculate hand vs. range equity.
     """
-    # Call your existing engine function with the hand from the request
-    # Note: We are not using parallel processing here for simplicity in the API
-    equity = get_equity_vs_random(request.hero_hand)
+    equity = calculate_hand_vs_range_equity(
+        request.hero_hand,
+        request.villain_range_percent
+    )
     
-    # Return the results in a JSON response
+    # Return a structured JSON response
     return {
         "hero_hand": request.hero_hand,
-        "equity_vs_random": f"{equity:.2f}%",
-        "simulation_count": 2000 # Or whatever your engine's default is
+        "villain_range_percent": request.villain_range_percent,
+        "equity": f"{equity:.2f}%"
     }
 
-# This part allows us to run the server directly for testing
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

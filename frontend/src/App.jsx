@@ -3,59 +3,84 @@ import HandInput from './components/HandInput';
 import RangeSlider from './components/RangeSlider';
 import ActionButton from './components/ActionButton';
 import ResultsDisplay from './components/ResultsDisplay';
-import CardSelector from './components/CardSelector'; // <-- Import the new modal component
+import CardSelector from './components/CardSelector';
+
+const API_URL = "http://127.0.0.1:8000"; 
 
 function App() {
-  // State for the hero's hand (an array of 5 card strings)
   const [heroHand, setHeroHand] = useState(['', '', '', '', '']);
-  // State for the villain's range percentage
   const [villainRange, setVillainRange] = useState(15);
-  
-  // State to manage the card selector modal
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [result, setResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // --- Handlers for State Updates ---
-
-  const handleRangeChange = (event) => {
-    setVillainRange(event.target.value);
-  };
-
+  const handleRangeChange = (event) => setVillainRange(event.target.value);
   const handleCardSlotClick = (index) => {
     setEditingIndex(index);
     setIsSelectorOpen(true);
   };
-
   const handleCardSelect = (card) => {
     const newHand = [...heroHand];
     newHand[editingIndex] = card;
     setHeroHand(newHand);
-    setIsSelectorOpen(false); // Close the modal after selection
+    setIsSelectorOpen(false);
     setEditingIndex(null);
   };
-  
-  const handleClearHand = () => {
-      setHeroHand(['', '', '', '', '']);
+  const handleClearHand = () => setHeroHand(['', '', '', '', '']);
+
+  const handleCalculate = async () => {
+    const handString = heroHand.join('');
+    if (handString.length !== 10) {
+      setError("Please select a full 5-card hand for the Hero.");
+      return;
+    }
+    
+    setIsLoading(true);
+    setResult(null);
+    setError(null);
+
+    const requestBody = { 
+      hero_hand: handString,
+      villain_range_percent: parseInt(villainRange, 10) 
+    };
+
+    console.log("Sending request to backend:", requestBody);
+
+    try {
+      const response = await fetch(`${API_URL}/api/calculate-equity`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        console.error("API Error Response Status:", response.status);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Received response from backend:", data);
+      setResult(data);
+
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setError("Failed to fetch equity. Please check the backend server.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // This calculates which cards are already used and should be disabled.
-  // useMemo prevents recalculating this on every render.
-  const usedCards = useMemo(() => {
-    const allUsed = new Set(heroHand.filter(card => card !== ''));
-    return allUsed;
-  }, [heroHand]);
-
+  const usedCards = useMemo(() => new Set(heroHand.filter(card => card !== '')), [heroHand]);
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-200 flex flex-col items-center p-4 sm:p-8">
-      {/* The main application container */}
       <div className="w-full max-w-2xl bg-slate-800 rounded-lg shadow-xl p-6 space-y-6 relative">
-        
         <header className="text-center">
           <h1 className="text-3xl font-bold text-cyan-400">PLO5 Equity Calculator</h1>
           <p className="text-slate-400 mt-1">Hand vs. Range Equity</p>
         </header>
-
         <main className="space-y-8">
           <HandInput 
             playerName="Hero"
@@ -63,24 +88,15 @@ function App() {
             onCardClick={handleCardSlotClick}
             onClear={handleClearHand}
           />
-
           <div className="p-4 bg-slate-700/50 rounded-md">
             <h2 className="text-xl font-semibold mb-3 text-slate-300">Villain's Range</h2>
-            <p className="text-sm text-slate-400 mb-4">
-              Select the percentage of the strongest starting hands to include in the villain's range.
-            </p>
-            <RangeSlider 
-              value={villainRange} 
-              onChange={handleRangeChange} 
-            />
+            <p className="text-sm text-slate-400 mb-4">Select the percentage of the strongest starting hands to include in the villain's range.</p>
+            <RangeSlider value={villainRange} onChange={handleRangeChange} />
           </div>
-
-          <ActionButton />
-          <ResultsDisplay />
+          <ActionButton onClick={handleCalculate} isLoading={isLoading} />
+          <ResultsDisplay result={result} error={error} isLoading={isLoading} />
         </main>
       </div>
-      
-      {/* Conditionally render the Card Selector Modal */}
       {isSelectorOpen && (
         <CardSelector 
           onSelect={handleCardSelect}
@@ -88,9 +104,7 @@ function App() {
           usedCards={usedCards}
         />
       )}
-
-      {/* Footer */}
-      <footer className="text-center mt-8 text-slate-500 text-sm">
+       <footer className="text-center mt-8 text-slate-500 text-sm">
         <p>Built by Lucas Dylan Purnell</p>
         <div className="flex justify-center space-x-4 mt-2">
           <a href="https://github.com/SyntaxErrorGoblin" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors" aria-label="GitHub">

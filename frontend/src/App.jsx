@@ -5,7 +5,7 @@ import ActionButton from './components/ActionButton';
 import ResultsDisplay from './components/ResultsDisplay';
 import CardSelector from './components/CardSelector';
 
-const API_URL = "http://127.0.0.1:8000"; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
   const [heroHand, setHeroHand] = useState(['', '', '', '', '']);

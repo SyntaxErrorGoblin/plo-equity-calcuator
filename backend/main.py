@@ -11,8 +11,7 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:5173",
-    "https://plo-equity-calcuator.vercel.app/" # The default port for Vite/React dev server
-    # Will add your deployed Vercel URL here later
+    "https://plo-equity-calcuator.vercel.app/"
 ]
 
 app.add_middleware(
@@ -22,6 +21,10 @@ app.add_middleware(
     allow_methods=["*"], # Allow all methods (GET, POST, etc.)
     allow_headers=["*"], # Allow all headers
 )
+
+@app.get("/")
+def health_check():
+    return {"status": "healthy"}
 
 # Define the request model to accept both hero hand and villain range
 class EquityRequest(BaseModel):

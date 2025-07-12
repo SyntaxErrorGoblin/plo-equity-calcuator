@@ -8,7 +8,7 @@ To the best of my knowledge this is the only calculator that allows calculations
 
 ---
 
-## Live Demo
+## Live Demo - currently down while I port everything over to AWS Lambda
 
 https://plo-equity-calcuator.vercel.app/
 ![As shown here](https://github.com/user-attachments/assets/0306c557-a592-4b10-b8d5-46557ac27cd7)

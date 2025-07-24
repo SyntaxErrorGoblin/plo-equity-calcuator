@@ -38,7 +38,7 @@ def get_equity_vs_random(hero_hand_str: str, executor: ProcessPoolExecutor | Non
         hole_dealing_count=5,
         board_dealing_count=5,
         deck=pk.Deck.STANDARD,
-        hand_types=(pk.OmahaHoldemHand,), # Using the class you found works.
+        hand_types=(pk.OmahaHoldemHand,),
         sample_count=PRECOMPUTE_SIM_COUNT,
         executor=executor,
     )

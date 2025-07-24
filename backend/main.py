@@ -2,8 +2,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
-from fastapi.middleware.cors import CORSMiddleware # <-- Import CORS
-
+from fastapi.middleware.cors import CORSMiddleware
 from engine import calculate_hand_vs_range_equity
 
 app = FastAPI()
@@ -11,7 +10,8 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:5173",
-    "https://plo-equity-calcuator.vercel.app"
+    "https://plo-equity-calcuator.vercel.app",
+    "https://*-mrmoglins-projects.vercel.app",   
     
 ]
 

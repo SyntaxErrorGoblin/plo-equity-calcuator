@@ -11,7 +11,8 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:5173",
-    "https://plo-equity-calcuator.vercel.app/"
+    "https://plo-equity-calcuator.vercel.app"
+    
 ]
 
 app.add_middleware(

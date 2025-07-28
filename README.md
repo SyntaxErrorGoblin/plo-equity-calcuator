@@ -51,6 +51,27 @@ https://plo-equity-calcuator.vercel.app/
 
 ---
 
+### 🛠️ Running for Local Development
+
+Follow these instructions to set up and run the project on your local machine for development and testing.
+
+#### Prerequisites
+
+Before you begin, ensure you have the following installed:
+* [Git](https://git-scm.com/downloads)
+* [Python](https://www.python.org/downloads/) (version 3.10 or higher)
+* [Node.js](https://nodejs.org/en) (which includes npm)
+
+#### 1. Clone the Repository
+
+First, clone the project from GitHub to your local machine:
+```bash
+git clone [https://github.com/SyntaxErrorGoblin/plo-equity-calculator.git](https://github.com/SyntaxErrorGoblin/plo-equity-calculator.git)
+cd plo-equity-calculator
+
+
+---
+
 ### License
 
 This project is open source under the [MIT License](LICENSE.md).

@@ -1,13 +1,11 @@
 
 import pokerkit as pk
-import time
 import json
-import os
 from concurrent.futures import ProcessPoolExecutor
 
 # --- Configuration ---
 # The number of villain hands to sample from the selected range.
-HAND_VS_RANGE_SAMPLE_SIZE = 2000
+HAND_VS_RANGE_SAMPLE_SIZE = 1000
 # The number of simulations for the initial hand ranking.
 PRECOMPUTE_SIM_COUNT = 10000
 RESULTS_FILE = 'ranked_hands.json' 

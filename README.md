@@ -8,7 +8,6 @@ To the best of my knowledge this is the only calculator that allows calculations
 
 ---
 
-## Live Demo - currently down while I port everything over to AWS Lambda
 
 https://plo-equity-calcuator.vercel.app/
 ![As shown here](https://github.com/user-attachments/assets/0306c557-a592-4b10-b8d5-46557ac27cd7)
@@ -34,7 +33,7 @@ https://plo-equity-calcuator.vercel.app/
 2.  **Data Product Deployment (MLOps in Action):**
     * The simulation engine is exposed as a **REST API** using **FastAPI**.
     * The backend is **containerized with Docker** for portability.
-    * Deployed to scalable cloud infrastructure (e.g., **AWS App Runner** / Render), this transforms the  model into a readily accessible **model-as-a-service**
+    * Deployed to scalable cloud infrastructure (Render), this transforms the  model into a readily accessible **model-as-a-service**
 
 3.  **Interactive Data Visualization (User Experience):**
     * A responsive frontend built with **React** consumes the API.
@@ -45,7 +44,7 @@ https://plo-equity-calcuator.vercel.app/
 ### Technologies Used
 
 * **Backend:** Python (FastAPI, PokerKit)
-* **Containerization:** Docker
+* **Containerization and deployment:** Docker, Render (Backend CI/CD), Vercel (Frontend CI/CD)
 * **Frontend:** React (Vite)
 * **Cloud Deployment:** AWS App Runner / Render (backend), Vercel (frontend)
 

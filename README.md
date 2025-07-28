@@ -172,12 +172,9 @@ Migrate the hand‐evaluation logic in `get_winner_on_board` from the high‐lev
 Repackage the FastAPI backend for serverless deployment on AWS Lambda using the AWS Serverless Application Model (SAM) and the [Mangum](https://github.com/jordaneremieff/mangum) adapter.
 
 **Benefits:**  
-- **Cloud Expertise:** Hands‑on experience with AWS Lambda, SAM templates, and serverless best practices.  
-- **Cost & Maintenance:** Potentially lower operational costs and eliminate server management overhead.  
-- **Resume Impact:** “Serverless Architecture” and “AWS Lambda” are highly sought‑after skills.
-
+- **Cost & Maintenance:** Faster processing of all requests compared to Render
+- 
 **Considerations:**  
-- Steeper learning curve for SAM CLI, IAM roles, and Lambda configuration.  
 - Adapting code for Mangum and managing cold‑start performance.  
 - Packaging dependencies within Lambda deployment limits.
 
@@ -189,7 +186,6 @@ Repackage the FastAPI backend for serverless deployment on AWS Lambda using the 
 Extend equity computations beyond pre‑flop by allowing users to specify flop from each street
 
 **Benefits:**  
-- Turns the tool into a comprehensive study partner for in‑depth scenario analysis.  
 - Enables exploration of texture‑specific equities and range vs. range outcomes post‑flop.
 
 **Considerations:**  

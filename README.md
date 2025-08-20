@@ -157,12 +157,11 @@ Migrate the hand‐evaluation logic in `get_winner_on_board` from the high‐lev
 **Benefits:**  
 - **Speed:** Dramatically reduce simulation time per hand.  
 - **Scalability:** Support larger numbers of Monte Carlo trials for higher-precision equity estimates.  
-- **Skill Showcase:** Demonstrate profiling, native‐code integration, and low‐level optimization techniques.
 
 **Considerations:**  
 - Replacing `pokerkit`’s game‑state abstractions with a custom simulation loop.  
-- Managing deck creation, shuffling, and hand ranking manually.  
-- Extensive testing required to avoid subtle bugs.
+- Managing deck creation, shuffling, and hand ranking manually
+- Libraries built in C++ don't seem to have native support for anything beyond PLO
 
 ---
 
@@ -175,7 +174,7 @@ Repackage the FastAPI backend for serverless deployment on AWS Lambda using the 
 - **Cost & Maintenance:** Faster processing of all requests compared to Render
 - 
 **Considerations:**  
-- Adapting code for Mangum and managing cold‑start performance.  
+- Adapting code for Mangum.  
 - Packaging dependencies within Lambda deployment limits.
 
 ---
@@ -183,7 +182,7 @@ Repackage the FastAPI backend for serverless deployment on AWS Lambda using the 
 ## 3. Major Feature: Post‑Flop Equity Calculator
 
 **Objective:**  
-Extend equity computations beyond pre‑flop by allowing users to specify flop from each street
+Extend equity computations beyond pre‑flop by allowing users to specify flop and compare range vs range
 
 **Benefits:**  
 - Enables exploration of texture‑specific equities and range vs. range outcomes post‑flop.

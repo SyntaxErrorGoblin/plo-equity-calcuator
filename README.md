@@ -172,7 +172,7 @@ Repackage the FastAPI backend for serverless deployment on AWS Lambda using the 
 
 **Benefits:**  
 - **Cost & Maintenance:** Faster processing of all requests compared to Render
-- 
+
 **Considerations:**  
 - Adapting code for Mangum.  
 - Packaging dependencies within Lambda deployment limits.

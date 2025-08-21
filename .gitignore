@@ -1,7 +1,51 @@
+# =========================================
+# Generic / OS / Logs
+# =========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# macOS specific
+.DS_Store
+
+# =========================================
+# Project Dependencies
+# =========================================
 # Python virtual environment
 backend/venv/
 
 # Node.js dependencies
+node_modules/
 frontend/node_modules/
 
+# =========================================
+# Build Output / Cache
+# =========================================
+# Python cache
+__pycache__/
+
+# JavaScript build output
+dist/
+dist-ssr/
+
+# =========================================
+# Environment & Local Files
+# =========================================
 .env*
+*.local
+
+# =========================================
+# IDE / Editor Configs
+# =========================================
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?   

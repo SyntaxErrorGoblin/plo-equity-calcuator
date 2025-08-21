@@ -8,7 +8,6 @@ To the best of my knowledge this is the only calculator that allows calculations
 
 ---
 
-## Live Demo - currently down while I port everything over to AWS Lambda
 
 https://plo-equity-calcuator.vercel.app/
 ![As shown here](https://github.com/user-attachments/assets/0306c557-a592-4b10-b8d5-46557ac27cd7)
@@ -34,7 +33,7 @@ https://plo-equity-calcuator.vercel.app/
 2.  **Data Product Deployment (MLOps in Action):**
     * The simulation engine is exposed as a **REST API** using **FastAPI**.
     * The backend is **containerized with Docker** for portability.
-    * Deployed to scalable cloud infrastructure (e.g., **AWS App Runner** / Render), this transforms the  model into a readily accessible **model-as-a-service**
+    * Deployed to scalable cloud infrastructure (Render), this transforms the  model into a readily accessible **model-as-a-service**
 
 3.  **Interactive Data Visualization (User Experience):**
     * A responsive frontend built with **React** consumes the API.
@@ -45,7 +44,7 @@ https://plo-equity-calcuator.vercel.app/
 ### Technologies Used
 
 * **Backend:** Python (FastAPI, PokerKit)
-* **Containerization:** Docker
+* **Containerization and deployment:** Docker, Render (Backend CI/CD), Vercel (Frontend CI/CD)
 * **Frontend:** React (Vite)
 * **Cloud Deployment:** AWS App Runner / Render (backend), Vercel (frontend)
 
@@ -72,8 +71,175 @@ cd plo-equity-calculator
 
 ---
 
+### 🛠️ Running for Local Development
+
+Follow these instructions to set up and run the project on your local machine for development and testing.
+
+---
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- Git (https://git-scm.com/downloads)
+- Python (version 3.10 or higher) from https://www.python.org/downloads/
+- Node.js (which includes npm) from https://nodejs.org/en/
+
+---
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/SyntaxErrorGoblin/plo-equity-calculator.git
+cd plo-equity-calculator
+```
+
+### 2. Set Up the Backend
+
+The backend runs on FastAPI. We’ll set up a Python virtual environment to manage dependencies, then install the requirements.
+
+```bash
+# Navigate into the backend directory
+cd backend
+```
+
+```bash
+# Create a virtual environment
+python -m venv venv
+```
+
+```bash
+# Activate the virtual environment
+# Windows (PowerShell):
+.\venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+```
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+```
+
+---
+
+### 3. Set Up the Frontend
+
+The frontend is a React application built with Vite. Install its Node.js dependencies:
+
+```bash
+# From the project root
+cd frontend
+npm install
+```
+
+---
+
+### 4. Running the Application Locally
+
+You’ll need **two terminals**:
+
+**Terminal 1 — Backend**
+
+```bash
+cd backend
+# Windows:
+.\venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+uvicorn backend.main:app --reload
+```
+
+_Backend now live at_ http://127.0.0.1:8000
+
+**Terminal 2 — Frontend**
+
+```bash
+cd frontend
+npm run dev
+```
+
+_Frontend now live at_ http://localhost:5173
+
+
+---
+
+# 📌 Potential Contributions & Future Improvements
+
+The core functionality of the PLO Equity Calculator is complete. The following list highlights possible enhancements that any contributor can pick up to improve performance, add new features, or deepen strategic capabilities.
+
+---
+
+## 1. Performance Optimization: Core Engine Porting
+
+**Objective:**  
+Migrate the hand‐evaluation logic in `get_winner_on_board` from the high‐level `pokerkit` implementation to a C++‑backed library (e.g. [phevaluator](https://github.com/chenosaurus/phevaluator)).
+
+**Benefits:**  
+- **Speed:** Dramatically reduce simulation time per hand.  
+- **Scalability:** Support larger numbers of Monte Carlo trials for higher-precision equity estimates.  
+- **Skill Showcase:** Demonstrate profiling, native‐code integration, and low‐level optimization techniques.
+
+**Considerations:**  
+- Replacing `pokerkit`’s game‑state abstractions with a custom simulation loop.  
+- Managing deck creation, shuffling, and hand ranking manually.  
+- Extensive testing required to avoid subtle bugs.
+
+---
+
+## 2. Advanced Deployment: AWS Lambda Migration
+
+**Objective:**  
+Repackage the FastAPI backend for serverless deployment on AWS Lambda using the AWS Serverless Application Model (SAM) and the [Mangum](https://github.com/jordaneremieff/mangum) adapter.
+
+**Benefits:**  
+- **Cloud Expertise:** Hands‑on experience with AWS Lambda, SAM templates, and serverless best practices.  
+- **Cost & Maintenance:** Potentially lower operational costs and eliminate server management overhead.  
+- **Resume Impact:** “Serverless Architecture” and “AWS Lambda” are highly sought‑after skills.
+
+**Considerations:**  
+- Steeper learning curve for SAM CLI, IAM roles, and Lambda configuration.  
+- Adapting code for Mangum and managing cold‑start performance.  
+- Packaging dependencies within Lambda deployment limits.
+
+---
+
+## 3. Major Feature: Post‑Flop Equity Calculator
+
+**Objective:**  
+Extend equity computations beyond pre‑flop by allowing users to specify flop from each street
+
+**Benefits:**  
+- Turns the tool into a comprehensive study partner for in‑depth scenario analysis.  
+- Enables exploration of texture‑specific equities and range vs. range outcomes post‑flop.
+
+**Considerations:**  
+- **Frontend:** Design inputs for up to three community cards and validate entries.  
+- **Backend:** Initialize simulations from a given board state and manage combinatorial complexity.  
+- Limited usefulness in current state as ranges generally become more refined with each street and the hands that make it to flop in certain scenarios will change heavily. May be better to rely on solvers for this
+
+---
+
+## 4. Advanced Feature: Range Manipulation
+
+**Objective:**  
+Allow contributors to add functionality for manual include/exclude of specific hands from an opponent’s range after setting an initial percentage.
+
+**Benefits:**  
+- Models realistic opponent tendencies (e.g., “Top 5% of hands would of already been 3-bet”).  
+- Produces more realistic equities for advanced game‑theory and exploitative analyses.
+
+**Considerations:**  
+- **Frontend:** Redesign how the range is selected
+- **Backend:** Would simply need to change selection critera.  
+
+
+---
+
 ### License
 
 This project is open source under the [MIT License](LICENSE.md).
 
 ---
+
+
